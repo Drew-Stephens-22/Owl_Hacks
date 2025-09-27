@@ -3,4 +3,5 @@
 *.iml
 .directory
 .idea
-.venv*
+readme.md
+.dockerignore
