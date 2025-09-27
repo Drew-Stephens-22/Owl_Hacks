@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./App.css";
 
 export default function App() {
   const [stars, setStars] = useState([]);
   const [inputValue, setInputValue] = useState("");
+  const textAreaRef = useRef(null);
 
   useEffect(() => {
     const starCount = 100;
@@ -20,6 +21,18 @@ export default function App() {
     setStars(newStars);
   }, []);
 
+  useEffect(() => {
+    const textarea = textAreaRef.current;
+    if (textarea) {
+      textarea.style.height = "auto"; // reset height
+      textarea.style.height = textarea.scrollHeight + "px"; // grow to fit content
+    }
+  }, [inputValue]);
+
+  const clickButton = () => {
+    alert(inputValue);
+  }
+  
   return (
     <div className="">
       {/* Starry background */}
@@ -42,12 +55,15 @@ export default function App() {
       {/* Centered title and input */}
       <div className="center-content">
         <h1>Care Through the Cosmos</h1>
-        <input
-          className="input"
+        <textarea
+          ref={textAreaRef}
+          className="textArea"
           placeholder="What would you like help with?"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
+          style={{ height: `${Math.max(100, inputValue.length)}px` }}
         />
+        <button onClick={clickButton}>{'>'}</button>
       </div>
     </div>
   );
