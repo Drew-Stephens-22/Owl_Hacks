@@ -16,8 +16,8 @@ static_folder="/Users/mattpotts/owlhacks2025/dist",
     static_url_path="")
 app.secret_key = env.get("APP_SECRET_KEY")
 
-FRONTEND_URL = env.get("FRONTEND_URL", "http://localhost:5173")  # <-- added
-PORT = int(env.get("PORT", 8000))                                # <-- default 8000
+FRONTEND_URL = env.get("FRONTEND_URL", "http://localhost:5173")
+PORT = int(env.get("PORT", 8000))                                
 
 oauth = OAuth(app)
 oauth.register(

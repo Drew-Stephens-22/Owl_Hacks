@@ -21,6 +21,7 @@ export default function App() {
   const astronautRef = useRef(null);
   const [score, setScore] = useState(0);
 
+
   // create initial stars
   useEffect(() => {
     const starCount = 100;
@@ -250,7 +251,9 @@ const destroyAsteroid = (ast) => {
 
   return (
     <div>
-      <p className="">Login</p>
+      <button onClick={() => (window.location.href = "http://localhost:8000/login")}>
+  Login
+</button>
       {gameOver && (
         <div className="game-over-overlay">
           <h1>GAME OVER</h1>
