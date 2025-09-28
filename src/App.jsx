@@ -61,9 +61,9 @@ useEffect(() => {
   const decreaseStats = () => {
     setAstronaut(prev => ({
       ...prev,
-      hunger: (gameOver || wonGame) ?  prev.hunger : Math.max(prev.hunger - 1, 0),
+      hunger: (gameOver || wonGame) ?  prev.hunger : Math.max(prev.hunger - (sleep ? 0.5 : 1), 0),
       energy: sleep ? Math.min(prev.energy + 1, 100) : Math.max(prev.energy - 1, 0),
-      oxygen: (gameOver || wonGame) ? prev.oxygen : Math.max(prev.oxygen - 1, 0),
+      oxygen: (gameOver || wonGame) ? prev.oxygen : Math.max(prev.oxygen - (sleep ? 0.5 : 1), 0),
     }));
 
     timer = setTimeout(decreaseStats, Math.random() * 1000);
@@ -94,7 +94,7 @@ useEffect(() => {
   }, 1000);
 
   return () => clearInterval(timer);
-}, []);
+}, [distance]);
 
 const restartGame = () => {
   setAstronaut({ hunger: 100, energy: 100, oxygen: 100, health: 50, sleep: false });
@@ -152,12 +152,12 @@ const gameWon = () => {
 useEffect(() => {
   let timer;
   const decreaseDistance = () => {
-    setDistance(prev => sleep ? prev : Math.max(prev - Math.floor(Math.random() * 100), 0));
+    setDistance(prev => sleep || gameOver ? prev : Math.max(prev - Math.floor(Math.random() * 100), 0));
     timer = setTimeout(decreaseDistance, Math.random() * 1000 + 500); 
   };
   decreaseDistance(); 
   return () => clearTimeout(timer); 
-}, [sleep]);
+}, [sleep, gameOver]);
 
   return (
     <div className="">
