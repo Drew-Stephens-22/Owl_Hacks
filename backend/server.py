@@ -3,16 +3,17 @@
 import json
 from os import environ as env
 from urllib.parse import quote_plus, urlencode
-
+from flask import Flask, redirect, render_template, session, url_for, jsonify, send_from_directory
 from authlib.integrations.flask_client import OAuth
 from dotenv import find_dotenv, load_dotenv
-from flask import Flask, redirect, render_template, session, url_for, jsonify
 
 ENV_FILE = find_dotenv()
 if ENV_FILE:
     load_dotenv(ENV_FILE)
 
-app = Flask(__name__)
+app = Flask(__name__,
+static_folder="/Users/mattpotts/owlhacks2025/dist",
+    static_url_path="")
 app.secret_key = env.get("APP_SECRET_KEY")
 
 FRONTEND_URL = env.get("FRONTEND_URL", "http://localhost:5173")  # <-- added
@@ -27,15 +28,13 @@ oauth.register(
     server_metadata_url=f'https://{env.get("AUTH0_DOMAIN")}/.well-known/openid-configuration',
 )
 
-# Controllers API
-@app.route("/")
-def home():
-    # Keep sample template route (not used by SPA, but harmless)
-    return render_template(
-        "home.html",
-        session=session.get("user"),
-        pretty=json.dumps(session.get("user"), indent=4),
-    )
+# Serve SPA
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def serve_spa(path):
+    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+        return send_from_directory(app.static_folder, path)
+    return send_from_directory(app.static_folder, "index.html")
 
 # NEW: small JSON endpoint so the SPA can read the logged-in user
 @app.route("/session", methods=["GET"])

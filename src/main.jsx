@@ -2,7 +2,6 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import App from './App.jsx'
-import Game from './game/Game.jsx'
 import './index.css'
 
 // Optional tiny status screen (in case /callback ever hits the front-end)
@@ -31,7 +30,6 @@ createRoot(document.getElementById('root')).render(
         {/* If your proxy ever doesn't catch /callback, show a spinner */}
         <Route path="/callback" element={<Callback />} />
         {/* Game route */}
-        <Route path="/game" element={<Game />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
